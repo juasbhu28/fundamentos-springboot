@@ -81,7 +81,7 @@ public class FundamentosApplication implements CommandLineRunner {
 		//getInformationJpqlFromUserNOTExisting();
 
 		//Anotation transactional
-		probandoTransactionalError();
+		//probandoTransactionalError();
 
 	}
 
@@ -96,7 +96,7 @@ public class FundamentosApplication implements CommandLineRunner {
 		try{
 			userService.saveTransactional(users);
 		}catch(Exception e){
-			LOGGER.error("Esta excepción se lanza dentro de una antoación @transactional " + e.getMessage())
+			LOGGER.error("Esta excepción se lanza dentro de una antoación @transactional " + e.getMessage());
 		}
 
 		userService.getAllUser()
@@ -105,9 +105,16 @@ public class FundamentosApplication implements CommandLineRunner {
 	}
 
 	private void getConsultsRepository(){
+
 		//Values parameters
-		userRepository.getAllByBirthDateAndEmail(LocalDate.of(2021, 12, 8), "marco@domain.com")
-				.orElseThrow(() -> new RuntimeException("No se encontró usuario con los valores en parameters"));
+		userRepository.findByName("Marco")
+				.stream()
+				.forEach( user -> LOGGER.info("Método getInformationJpqlFromUser " + user ));
+
+		//Values parameters
+		//LOGGER.info("Método getInformationJpqlFromUser " +
+		//		userRepository.getAllByBirthDateAndEmail(LocalDate.of(2021, 12, 8), "marco@domain.com")
+		//		.orElseThrow(() -> new RuntimeException("No se encontró usuario con los valores en parameters")));
 
 	}
 
