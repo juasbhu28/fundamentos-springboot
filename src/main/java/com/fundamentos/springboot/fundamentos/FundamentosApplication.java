@@ -7,6 +7,7 @@ import com.fundamentos.springboot.fundamentos.component.dependency.ComponentDepe
 import com.fundamentos.springboot.fundamentos.entity.User;
 import com.fundamentos.springboot.fundamentos.pojo.UserPojo;
 import com.fundamentos.springboot.fundamentos.repository.UserRepository;
+import com.fundamentos.springboot.fundamentos.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,6 +37,9 @@ public class FundamentosApplication implements CommandLineRunner {
 	//Inyectando repositorio como depedencia
 	private UserRepository userRepository;
 
+	//Inyecto userservice para probar Transacctional
+	private UserService userService;
+
 	//Inyectamos las dependencias
 	public FundamentosApplication(
 			@Qualifier("componentTwoImplement")	ComponentDependency componentDependency,
@@ -43,7 +47,8 @@ public class FundamentosApplication implements CommandLineRunner {
 			MyBeanWithDependenci myBeanWithDependenci,
 			MyBeanWithPropierties myBeanWithPropierties,
 			UserPojo userPojo,
-			UserRepository userRepository
+			UserRepository userRepository,
+			UserService userService
 			) {
 
 		this.componentDependency = componentDependency;
@@ -52,6 +57,7 @@ public class FundamentosApplication implements CommandLineRunner {
 		this.myBeanWithPropierties = myBeanWithPropierties;
 		this.userPojo = userPojo;
 		this.userRepository = userRepository;
+		this.userService = userService;
 	}
 
 
@@ -74,14 +80,31 @@ public class FundamentosApplication implements CommandLineRunner {
 		//Trhowing runtime excpetion for no existing
 		//getInformationJpqlFromUserNOTExisting();
 
+		//Anotation transactional
+		probandoTransactionalError();
+
+	}
+
+	private void probandoTransactionalError(){
+
+		User test1 = new User("TestTransactional1", "TestTransactional1@domain.com", LocalDate.now());
+		User test2 = new User("TestTransactional2", "TestTransactional2@domain.com", LocalDate.now());
+		User test3 = new User("TestTransactional3", "TestTransactional3@domain.com", LocalDate.now());
+		User test4 = new User("TestTransactional4", "TestTransactional4@domain.com", LocalDate.now());
+
+		List<User> users = Arrays.asList(test1, test2, test3, test4);
+
+		userService.saveTransactional(users);
+
+		userService.getAllUser()
+				.stream()
+				.forEach( user -> LOGGER.info("Este es el usuario dentro del método trasnaccional " + user));
 	}
 
 	private void getConsultsRepository(){
-
 		//Values parameters
 		userRepository.getAllByBirthDateAndEmail(LocalDate.of(2021, 12, 8), "marco@domain.com")
 				.orElseThrow(() -> new RuntimeException("No se encontró usuario con los valores en parameters"));
-
 
 	}
 
