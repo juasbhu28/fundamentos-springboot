@@ -15,7 +15,8 @@ public class GeneralConfiguration {
     @Value("${value.name}")
     private String name;
 
-    @Value("${value.apellido}")
+    //If some value is wrong write trhow error
+    @Value("${value.lastName}")
     private String apellido;
 
     @Value("${value.random}")
