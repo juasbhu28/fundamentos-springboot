@@ -19,6 +19,11 @@ dependencies {
 
 	//Devtools me ayuda a hacer cambios en vivo sin necesidad de reinicar to do el servidor
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	//Adding h2 runtime database
+	runtimeOnly 'com.h2database:h2'
+
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 }
