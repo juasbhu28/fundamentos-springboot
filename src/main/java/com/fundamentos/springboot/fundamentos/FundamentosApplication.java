@@ -9,17 +9,19 @@ import com.fundamentos.springboot.fundamentos.pojo.UserPojo;
 import com.fundamentos.springboot.fundamentos.repository.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication
+@EnableJpaRepositories("com.fundamentos.springboot.fundamentos.repository")
 public class FundamentosApplication implements CommandLineRunner {
 
 	//First: From file propiertie we config just error log show
@@ -38,13 +40,14 @@ public class FundamentosApplication implements CommandLineRunner {
 
 	//Inyectamos las dependencias
 	public FundamentosApplication(
-			@Qualifier("componentTwoImplement")
-					ComponentDependency componentDependency,
+			@Qualifier("componentTwoImplement")	ComponentDependency componentDependency,
 			MyBean myBean,
 			MyBeanWithDependenci myBeanWithDependenci,
 			MyBeanWithPropierties myBeanWithPropierties,
 			UserPojo userPojo,
-			UserRepository UserRepository) {
+			UserRepository userRepository
+			) {
+
 		this.componentDependency = componentDependency;
 		this.myBean = myBean;
 		this.myBeanWithDependenci = myBeanWithDependenci;
@@ -63,7 +66,38 @@ public class FundamentosApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		ejemplosAnteriores();
+
+		//Saving users in database with JPA
+		//saveUsersInDatabase();
+
+		//Gettin data base registir with JPQL
+		//getInformationJpqlFromUserExisting();
+
+		//Trhowing runtime excpetion for no existing
+		//getInformationJpqlFromUserNOTExisting();
+
 	}
+
+	private void getInformationJpqlFromUserExisting(){
+		LOGGER.info("Método getInformationJpqlFromUser " +
+				userRepository.findByUserEmail("john@domain.com")
+					.orElseThrow(() -> new RuntimeException("No se encontró el usuario")));
+
+		//Pueo usar el metodo ascending o descendig
+		//userRepository.findAndSort("user", Sort.by("id").descending()).stream().forEach(user -> LOGGER.info("Usuario con metodo sort " + user ))
+		userRepository.findAndSort("user", Sort.by("id").descending())
+				.forEach(LOGGER::info);
+	}
+
+
+
+	private void getInformationJpqlFromUserNOTExisting(){
+		LOGGER.info("Método getInformationJpqlFromUser " +
+				userRepository.findByUserEmail("NOEXISTO@domain.com")
+						.orElseThrow(() -> new RuntimeException("No se encontró el usuario")));
+	}
+
+
 
 	//Metodo que me ayudará a persistir mi información
 	private void saveUsersInDatabase() throws Exception{
@@ -82,10 +116,10 @@ public class FundamentosApplication implements CommandLineRunner {
 		//list.forEach(userRepository::save);
 
 		//Opc2 - Iterando atráves de un Stream
-		//list.stream().forEach(userRepository::save);
+		list.stream().forEach(userRepository::save);
 
 		//Opc3 - Puedo enviar una lista completa con el metodo saveAll del JPA repository
-		userRepository.saveAll(list);
+		//userRepository.saveAll(list);
 	}
 
 	public void ejemplosAnteriores(){
