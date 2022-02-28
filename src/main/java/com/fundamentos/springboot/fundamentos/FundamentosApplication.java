@@ -86,17 +86,19 @@ public class FundamentosApplication implements CommandLineRunner {
 		//userRepository.findAndSort("user", Sort.by("id").descending()).stream().forEach(user -> LOGGER.info("Usuario con metodo sort " + user ))
 		userRepository.findAndSort("user", Sort.by("id").descending())
 				.forEach(LOGGER::info);
+
+		userRepository.findByName("John").stream()
+				.forEach( user -> LOGGER.info("Usuario con query method - " + user ));
+
+		LOGGER.info("Usuario con query method findByEmailAndName " + userRepository.findByEmailAndName("marco@domain.com", "Marco")
+				.orElseThrow( () -> new RuntimeException( "Usuario no encontrado ")));
 	}
-
-
 
 	private void getInformationJpqlFromUserNOTExisting(){
 		LOGGER.info("Método getInformationJpqlFromUser " +
 				userRepository.findByUserEmail("NOEXISTO@domain.com")
 						.orElseThrow(() -> new RuntimeException("No se encontró el usuario")));
 	}
-
-
 
 	//Metodo que me ayudará a persistir mi información
 	private void saveUsersInDatabase() throws Exception{
