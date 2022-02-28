@@ -44,7 +44,7 @@ public class FundamentosApplication implements CommandLineRunner {
 			MyBeanWithDependenci myBeanWithDependenci,
 			MyBeanWithPropierties myBeanWithPropierties,
 			UserPojo userPojo,
-			UserRepository UserRepository) {
+			UserRepository userRepository) {
 		this.componentDependency = componentDependency;
 		this.myBean = myBean;
 		this.myBeanWithDependenci = myBeanWithDependenci;
@@ -62,7 +62,8 @@ public class FundamentosApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		ejemplosAnteriores();
+		//ejemplosAnteriores();
+		saveUsersInDatabase();
 	}
 
 	//Metodo que me ayudará a persistir mi información
@@ -82,10 +83,10 @@ public class FundamentosApplication implements CommandLineRunner {
 		//list.forEach(userRepository::save);
 
 		//Opc2 - Iterando atráves de un Stream
-		//list.stream().forEach(userRepository::save);
+		list.stream().forEach(userRepository::save);
 
 		//Opc3 - Puedo enviar una lista completa con el metodo saveAll del JPA repository
-		userRepository.saveAll(list);
+		//userRepository.saveAll(list);
 	}
 
 	public void ejemplosAnteriores(){
