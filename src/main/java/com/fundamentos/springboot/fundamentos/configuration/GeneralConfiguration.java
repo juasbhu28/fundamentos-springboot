@@ -37,7 +37,7 @@ public class GeneralConfiguration {
         builder.url("jdbc:h2:mem:testdb");
         builder.username("SA");
         builder.password("");
-        return builder.build();       
+        return builder.build();
     }
 
 }
