@@ -69,60 +69,18 @@ public class FundamentosApplication implements CommandLineRunner {
 		saveUsersInDatabase();
 
 		//Gettin data base registir with JPQL
-		getInformationJpqlFromUserExisting();
+		getConsultsRepository();
 
 		//Trhowing runtime excpetion for no existing
 		//getInformationJpqlFromUserNOTExisting();
 
 	}
 
-	private void getInformationJpqlFromUserExisting(){
-		LOGGER.info("Método getInformationJpqlFromUser " +
-				userRepository.findByUserEmail("john@domain.com")
-					.orElseThrow(() -> new RuntimeException("No se encontró el usuario")));
+	private void getConsultsRepository(){
 
-		//Pueo usar el metodo ascending o descendig
-		//userRepository.findAndSort("user", Sort.by("id").descending()).stream().forEach(user -> LOGGER.info("Usuario con metodo sort " + user ))
-		userRepository.findAndSort("user", Sort.by("id").descending())
-				.forEach(LOGGER::info);
-
-		userRepository.findByName("John").stream()
-				.forEach( user -> LOGGER.info("Usuario con query method - " + user ));
-
-		LOGGER.info("Usuario con query method findByEmailAndName " + userRepository.findByEmailAndName("marco@domain.com", "Marco")
-				.orElseThrow( () -> new RuntimeException( "Usuario no encontrado ")));
-
-		//En esta sentencia pong el porcentaje para usar la sentencia %  -LIKE
-		userRepository.findByNameLike("%j%")
-				.stream()
-				.forEach( user -> LOGGER.info("Sentence like - findByNameLike" + user));
-
-		//En esta sentencia con Containing similar al like, no hay necesidad de porcentajes
-		userRepository.findByNameContaining("j")
-				.stream()
-				.forEach( user -> LOGGER.info("Sentence like - findByNameLike" + user));
-
-
-		//Sentence OR  . email - null name
-		userRepository.findByNameOrEmail(null, "luis@domain.com")
-				.stream()
-				.forEach( user -> LOGGER.info("Sentence OR - findByNameOrEmail" + user));
-
-		//Or Name - null email
-		userRepository.findByNameOrEmail("Paola", null)
-				.stream()
-				.forEach( user -> LOGGER.info("Sentence OR - findByNameOrEmail" + user));
-
-
-		//Sentence between
-		userRepository.findByBirthDateBetween(LocalDate.of(2021, 3, 1), LocalDate.of(2021,5,31))
-				.stream()
-				.forEach( user -> LOGGER.info("Sentence BETWEEN - findByBirthDateBetween" + user));
-
-		//Sentence ORDER BY  - Cómo va con like tenemos que poner los porcentajes
-		userRepository.findByNameLikeOrderByIdDesc("%Paola")
-				.stream()
-				.forEach( user -> LOGGER.info("Sentence ORDER BY - findByNameLikeOrderByIdDesc" + user));
+		//Values parameters
+		userRepository.getAllByBirthDateAndEmail(LocalDate.of(2021, 12, 8), "marco@domain.com")
+				.orElseThrow(() -> new RuntimeException("No se encontró usuario con los valores en parameters"));
 
 
 	}
