@@ -13,9 +13,10 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query("SELECT user FROM user u WHERE u.email=?1")
+    //Take care with the name of object
+    @Query("SELECT u FROM User u WHERE u.email=?1")
     Optional<User> findByUserEmail(String email);
 
-    @Query("SELECT u FROM USER u WHERE u.name LIKE ?1%")
+    @Query("SELECT u FROM User u WHERE u.name LIKE ?1%")
     List<User> findAndSort(String name, Sort sort);
 }

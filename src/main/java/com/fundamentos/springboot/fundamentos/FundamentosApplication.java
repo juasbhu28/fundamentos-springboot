@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication
-@EnableJpaRepositories("com.fundamentos.springboot.fundamentos.repository")
 public class FundamentosApplication implements CommandLineRunner {
 
 	//First: From file propiertie we config just error log show
@@ -65,13 +64,13 @@ public class FundamentosApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		ejemplosAnteriores();
+		//ejemplosAnteriores();
 
 		//Saving users in database with JPA
-		//saveUsersInDatabase();
+		saveUsersInDatabase();
 
 		//Gettin data base registir with JPQL
-		//getInformationJpqlFromUserExisting();
+		getInformationJpqlFromUserExisting();
 
 		//Trhowing runtime excpetion for no existing
 		//getInformationJpqlFromUserNOTExisting();
