@@ -1,5 +1,7 @@
 package com.fundamentos.springboot.fundamentos.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -13,7 +15,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(length = 50 )
     private String name;
@@ -25,7 +27,12 @@ public class User {
 
     @ManyToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
+    @JsonIgnore
     private List<Card> posts = new ArrayList<>();
+
+    public User(Long id) {
+        this.id = id;
+    }
 
     @Override
     public String toString() {
@@ -47,11 +54,11 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

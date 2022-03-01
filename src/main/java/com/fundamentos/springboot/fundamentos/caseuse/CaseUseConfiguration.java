@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration;
 public class CaseUseConfiguration {
 
     @Bean
-    GetUser getUser(UserService user){
-        return new GetUserImpl(user);
+    GetUser getUser(UserService userService){
+        return new GetUserImpl(userService);
     }
 
 
