@@ -1,0 +1,17 @@
+<service>
+    <id>xMi-servicio-api</id>
+    <name>Microservice </name>
+    <description>This runs Retractos as a Win Service.</description>
+    <!--<env name="JAVA_HOME" value="C:/Program Files/Java/jdk1.8.0_201"/>-->
+	<env name="JAVA_HOME" value="C:/Program Files (x86)/AdoptOpenJDK/jre-8.0.232.09-openj9/"/>
+    <env name="API_PATH" value="E:/A-Despliegues/miRuta"/>
+    <env name="PROPERTIES_PATH" value="E:/despliegues/miRuta/application.yml"/>
+    <executable>%JAVA_HOME%/bin/java</executable>
+    <argument>-Xms128m</argument>
+    <argument>-Xmx512m</argument>
+    <argument>-XX:+UseG1GC</argument>
+    <argument>-Dspring.config.name=application</argument>
+    <argument>-Dspring.config.location=%PROPERTIES_PATH%</argument>
+    <argument>-jar</argument>
+    <argument>%API_PATH%/xMicroservicio-tal-0.0.1-SNAPSHOT.jar</argument>
+</service>
