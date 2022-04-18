@@ -207,6 +207,6 @@ Java 8 - POO - Java Funcional
         
   - **Install how to windows service**
       - Para instalar cómo servicio hay que modificar los parametos del archivo .xml en la carpeta installWServicie
-      - Para instalar `**miServicio.exe /install**`
+      - Para instalar `**miServicio.exe install**`
       - Iniciar `**net start miServicio.exe**`
       - Detener `**net stop miServicio.exe**`
